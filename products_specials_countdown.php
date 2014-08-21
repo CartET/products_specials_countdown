@@ -31,7 +31,11 @@ function products_specials_countdown_products_info()
 	if (os_db_num_rows($getSpecialsQuery) > 0)
 	{
 		$getSpecials = os_db_fetch_array($getSpecialsQuery);
-		return array('name' => 'PRODUCTS_EXPIRES', 'value' => '<div class="products_countdown" data-countdown="'.str_replace('-', '/', $getSpecials['expires_date']).'"></div>');
+
+		if (isset($getSpecials['expires_date']) && $getSpecials['expires_date'] > date("Y-m-d H:i:s"))
+			return array('name' => 'PRODUCTS_EXPIRES', 'value' => '<div class="products_countdown" data-countdown="'.str_replace('-', '/', $getSpecials['expires_date']).'"></div>');
+		else
+			return array('name' => 'PRODUCTS_EXPIRES', 'value' => '');
 	}
 	else
 		return false;
